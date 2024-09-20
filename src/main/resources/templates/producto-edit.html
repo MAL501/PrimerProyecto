@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>View</title>
+</head>
+<body>
+  <div id="producto">
+    <h2 th:text="${producto.titulo}">Título</h2>
+    Precio: <span th:text="${producto.precio}">0.0</span>
+    Cantidad: <span th:text="${producto.cantidad}">0</span>
+  </div>
+  <a th:href="@{/productos}">Volver a lista</a>
+</body>
+</html>

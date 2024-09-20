@@ -4,9 +4,7 @@ import com.malsoft.ejemplo.entity.Producto;
 import com.malsoft.ejemplo.repository.ProductoRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,7 @@ public class ProductoController {
     /* Con la anotación GetMapping le indicamos a Spring que el siguiente método
        se va a ejecutar cuando el usuario acceda a la URL http://localhost/productos */
     @GetMapping("/productos")
+    //Model se usa para pasar datos desde el controlador a la vista
     public String findAll(Model model){
         List<com.malsoft.ejemplo.entity.Producto> productos = this.productoRepository.findAll();
 
@@ -66,6 +65,46 @@ public class ProductoController {
         return "redirect:/productos";
 
     }
+    //En el mapping ponemos entre {} la variable que queremos para darle a
+    //la función mediante la ruta
+    @GetMapping("/productos/del/{id}")
+    public String delete(@PathVariable Long id){
+        productoRepository.deleteById(id);
+        //borrar productos
+        return "redirect:/productos";
+    }
+    @GetMapping("/productos/view/{id}")
+    public String view(@PathVariable Long id, Model model){
+        Producto p = productoRepository.getReferenceById(id);
+        model.addAttribute("producto",p);
+        return "producto-view";
+    }
+    @GetMapping("/productos/new")
+    public String newProducto(){
+        return "producto-new";
+    }
+    @PostMapping("/productos/new")
+    //RequiestParam recoge los parámetros de un formulario por su name
+    //Aunque se puede crear directamete el producto en el formulario
+    //Abria que crear en el getMapping un producto vacio con model.addAtribute()
+    public String newProductoPOST(@RequestParam String titulo,
+                                  @RequestParam Integer cantidad,
+                                  @RequestParam Double precio){
+        Producto p=new Producto(null, titulo,cantidad,precio);
+        productoRepository.save(p);
+        //Redirigimos a /productos
+        return "redirect:/productos";
+    }
+    @GetMapping("/productos/edit")
+    public String redirectProducto(Model model){
+        Producto producto = new Producto();
+        model.addAttribute("producto",producto);
+        return "producto-edit";
+    }
+    @PostMapping("/productos/edit")
+    public String editProducto(Producto p){
 
+        return "redirect:/productos";
+    }
 
 }

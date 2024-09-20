@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>View</title>
+</head>
+<body>
+  <form th:action="@{/productos/new}" method="POST">
+      <input type="text" placeholder="Titulo..." name="titulo" id="titulo"> <br>
+      <input type="number" placeholder="Cantidad..." name="cantidad" id="cantidad"> <br>
+      <input type="number" min="0" step="0.01" placeholder="Precio..." name="precio" id="precio"> <br>
+      <input type="submit" value="insertar">
+  </form>
+  <a th:href="@{/productos}">Volver a lista</a>
+</body>
+</html>

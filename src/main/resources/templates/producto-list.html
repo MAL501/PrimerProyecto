@@ -6,11 +6,16 @@
 </head>
 <body>
     <div id="productos">
-        <div >
+        <div th:each="producto : ${productos}">
             <h2 th:text="${producto.titulo}">Título</h2>
             Precio: <span th:text="${producto.precio}">0.0</span>
             Cantidad: <span th:text="${producto.cantidad}">0</span>
+            <a th:href="@{/productos/del/{id}(id=${producto.id})}">Borrar</a>
+            <a th:href="@{/productos/view/{id}(id=${producto.id})}">Ver</a>
+            <a th:href="@{/productos/edit/{id}(id=${producto.id})}">Editar</a>
         </div>
     </div>
+    <a th:href="@{/productos/new}">Crear producto</a>
+    <a th:href="@{/productos/add}">Cargar productos</a>
 </body>
 </html>
