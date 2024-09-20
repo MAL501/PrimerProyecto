@@ -2,21 +2,22 @@ package com.malsoft.ejemplo.entity;
 
 import jakarta.persistence.*;
 
-@Entity //Indica que esta clase es una entidad
-@Table(name="productos")//Indica que la tabla en la base de datos relacionada con esta entidad
+@Entity     //Especifica que esta clase es una entidad
+@Table(name="productos")    //Incida que la tabla en la base de datos relacionada con esta entidad
 public class Producto {
-    @Id //Esta notación especifica que este campo va a ser la clave principal de la tabla en la BBDD
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// Esta anotación especifica qie la clave primaria sea "auto-increment"
+
+    @Id     //Esta anotación especifica que este campo va a ser la clave principal de la tabla en la base de datos
+    @GeneratedValue(strategy = GenerationType.IDENTITY)     //Esta anotación especifica que la clave primaria sea "auto-increment"
     private Long id;
     private String titulo;
     private Integer cantidad;
     private Double precio;
 
-    public Producto(String titulo, Integer cantidad, Double precio, Long id) {
+    public Producto(Long id, String titulo, Integer cantidad, Double precio) {
+        this.id = id;
         this.titulo = titulo;
         this.cantidad = cantidad;
         this.precio = precio;
-        this.id = id;
     }
 
     public Producto() {
