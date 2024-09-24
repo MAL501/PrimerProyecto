@@ -5,11 +5,19 @@
     <title>View</title>
 </head>
 <body>
-  <div id="producto">
-    <h2 th:text="${producto.titulo}">Título</h2>
-    Precio: <span th:text="${producto.precio}">0.0</span>
-    Cantidad: <span th:text="${producto.cantidad}">0</span>
-  </div>
+  <!--th:action hace que cuando se envíe el formulario se encíe a nuestro endpoint
+  th:object nos permite cargar nuestro objeto "Producto" dentro de la página
+  Para que todo esto funcione se tiene que enviar por POST
+  -->
+  <form th:action="@{/productos/edit/{id}(id=${producto.id})}" th:object="${producto}" method="POST">
+      Título:<input type="text" id="titulo" name="titulo" th:value="${producto.titulo}" required />
+      <br>
+      Precio: <input type="number" step="1" id="precio" name="precio" th:value="${producto.precio}" required />
+      <br>
+      Cantidad: <input type="number" step="1" id="cantidad" name="cantidad" th:value="${producto.cantidad}" required />
+      <br>
+      <button type="submit">Enviar</button>
+  </form>
   <a th:href="@{/productos}">Volver a lista</a>
 </body>
 </html>

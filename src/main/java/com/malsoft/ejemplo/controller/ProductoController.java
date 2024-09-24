@@ -95,15 +95,17 @@ public class ProductoController {
         //Redirigimos a /productos
         return "redirect:/productos";
     }
-    @GetMapping("/productos/edit")
-    public String redirectProducto(Model model){
-        Producto producto = new Producto();
+    @GetMapping("/productos/edit/{id}")
+    public String redirectProducto(@PathVariable Long id,Model model){
+        Producto producto = productoRepository.getReferenceById(id);
         model.addAttribute("producto",producto);
         return "producto-edit";
     }
-    @PostMapping("/productos/edit")
-    public String editProducto(Producto p){
-
+    @PostMapping("/productos/edit/{id}")
+    public String editProducto(@PathVariable Long id,Producto p){
+        productoRepository.getReferenceById(id).setTitulo(p.getTitulo());
+        productoRepository.getReferenceById(id).setCantidad(p.getCantidad());
+        productoRepository.getReferenceById(id).setPrecio(p.getPrecio());
         return "redirect:/productos";
     }
 
