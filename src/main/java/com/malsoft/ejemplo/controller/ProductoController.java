@@ -2,8 +2,10 @@ package com.malsoft.ejemplo.controller;
 
 import com.malsoft.ejemplo.entity.Producto;
 import com.malsoft.ejemplo.repository.ProductoRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -87,10 +89,10 @@ public class ProductoController {
     //RequiestParam recoge los parámetros de un formulario por su name
     //Aunque se puede crear directamete el producto en el formulario
     //Abria que crear en el getMapping un producto vacio con model.addAtribute()
-    public String newProductoPOST(@RequestParam String titulo,
-                                  @RequestParam Integer cantidad,
-                                  @RequestParam Double precio){
-        Producto p=new Producto(null, titulo,cantidad,precio);
+    public String newProductoPOST(@Valid Producto p, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "producto-new";
+        }
         productoRepository.save(p);
         //Redirigimos a /productos
         return "redirect:/productos";
@@ -103,9 +105,8 @@ public class ProductoController {
     }
     @PostMapping("/productos/edit/{id}")
     public String editProducto(@PathVariable Long id,Producto p){
-        productoRepository.getReferenceById(id).setTitulo(p.getTitulo());
-        productoRepository.getReferenceById(id).setCantidad(p.getCantidad());
-        productoRepository.getReferenceById(id).setPrecio(p.getPrecio());
+        p.setId(id);
+        productoRepository.save(p);
         return "redirect:/productos";
     }
 
