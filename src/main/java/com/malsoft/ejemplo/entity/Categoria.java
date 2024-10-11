@@ -29,7 +29,7 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
@@ -38,7 +38,7 @@ public class Categoria {
         return this;
     }
 
-    public String nombre() {
+    public String getNombre() {
         return nombre;
     }
 
@@ -47,7 +47,7 @@ public class Categoria {
         return this;
     }
 
-    public String descripcion() {
+    public String getDescripcion() {
         return descripcion;
     }
 

@@ -1,6 +1,8 @@
 package com.malsoft.ejemplo.controller;
 
+import com.malsoft.ejemplo.entity.Categoria;
 import com.malsoft.ejemplo.entity.Producto;
+import com.malsoft.ejemplo.repository.CategoriaRepository;
 import com.malsoft.ejemplo.repository.ProductoRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -10,16 +12,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 //Para que Spring sepa que esta clase es un controlador tenemos que añadir la anotación @Controller antes de la clase
 @Controller
 public class ProductoController {
 
+    private final CategoriaRepository categoriaRepository;
     //Para acceder al repositorio creamos una propiedad y la asignamos en el constructor
     private ProductoRepository productoRepository;
 
-    public ProductoController(ProductoRepository repository){
+    public ProductoController(ProductoRepository repository, CategoriaRepository categoriaRepository){
         this.productoRepository = repository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     @GetMapping("/productos2")    //Anotación que indica la URL localhost:8080/productos2 mediante GET
@@ -40,10 +45,11 @@ public class ProductoController {
     @GetMapping("/productos")
     //Model se usa para pasar datos desde el controlador a la vista
     public String findAll(Model model){
-        List<com.malsoft.ejemplo.entity.Producto> productos = this.productoRepository.findAll();
-
+        List<Producto> productos = this.productoRepository.findAll();
+        List<Categoria> categorias = this.categoriaRepository.findAll();
         //Pasamos los datos a la vista
         model.addAttribute("productos",productos);
+        model.addAttribute("categorias",categorias);
 
         return "producto-list";
     }
@@ -82,7 +88,9 @@ public class ProductoController {
         return "producto-view";
     }
     @GetMapping("/productos/new")
-    public String newProducto(){
+    public String newProducto(Model model){
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "producto-new";
     }
     @PostMapping("/productos/new")
@@ -108,6 +116,24 @@ public class ProductoController {
         p.setId(id);
         productoRepository.save(p);
         return "redirect:/productos";
+    }
+    @GetMapping("/productos/categoria/{id}")
+    //Model se usa para pasar datos desde el controlador a la vista
+    public String findAllCategories(Model model,@PathVariable Long id){
+        Optional<Categoria> categoriaSeleccionada= categoriaRepository.findById(id);
+        if(categoriaSeleccionada.isPresent()) {
+            List<Producto> productos = this.productoRepository.findByCategoria(categoriaSeleccionada.get());
+            List<Categoria> categorias = this.categoriaRepository.findAll();
+            //Pasamos los datos a la vista
+            model.addAttribute("selectedCategoriaId",id);
+            model.addAttribute("productos", productos);
+            model.addAttribute("categorias", categorias);
+
+            return "producto-list";
+        }else {
+            //La categoría seleccionada no existe
+            return "redirect:/productos";
+        }
     }
 
 }

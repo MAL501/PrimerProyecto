@@ -24,7 +24,7 @@ public class App {
 		ProductoRepository productoRepository = contex.getBean(ProductoRepository.class);
 		CategoriaRepository categoriaRepository = contex.getBean(CategoriaRepository.class);
 
-		Producto p1 = new Producto(null, "t1",10,50.5);
+		/*Producto p1 = new Producto(null, "t1",10,50.5);
 		Producto p2 = new Producto(null, "t2",10,50.5);
 		Categoria c=new Categoria(null,"Móviles","Patatas");
 		Comentario comen=new Comentario(0,"patata","es una patata", LocalDateTime.now(),p1);
@@ -32,6 +32,7 @@ public class App {
 		p2.setCategoria(c);
 		c.getProductos().add(p1);
 		c.getProductos().add(p2);
+		categoriaRepository.save(c);*/
 	}
 
 }

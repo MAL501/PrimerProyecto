@@ -11,7 +11,6 @@ public class Comentario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String titulo;
     private String texto;
     private LocalDateTime fecha;
     @ManyToOne(targetEntity = Producto.class)
@@ -20,9 +19,8 @@ public class Comentario{
     public Comentario() {
     }
 
-    public Comentario(int id, String titulo, String texto, LocalDateTime fecha, Producto producto) {
+    public Comentario(int id, String texto, LocalDateTime fecha, Producto producto) {
         this.id = id;
-        this.titulo = titulo;
         this.texto = texto;
         this.fecha = fecha;
         this.producto = producto;
@@ -36,13 +34,7 @@ public class Comentario{
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
 
     public String getTexto() {
         return texto;
@@ -72,7 +64,6 @@ public class Comentario{
     public String toString() {
         return "Comentario{" +
                 "id=" + id +
-                ", titulo='" + titulo + '\'' +
                 ", texto='" + texto + '\'' +
                 ", fecha=" + fecha +
                 ", producto=" + producto +

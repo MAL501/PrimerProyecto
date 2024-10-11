@@ -28,7 +28,7 @@ public class Producto {
     private Categoria categoria;
     @OneToMany(targetEntity = Comentario.class, cascade = CascadeType.ALL,
                mappedBy = "producto")
-    private List<Comentario> comentarios = new ArrayList<>();
+    private List<Comentario> comentarios = new ArrayList<Comentario>();
 
     public Producto() {
     }

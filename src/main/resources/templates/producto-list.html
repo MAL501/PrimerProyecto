@@ -5,6 +5,12 @@
     <title>Listado de productos</title>
 </head>
 <body>
+    <select name="categoria" id="categoria" onchange="location.href='/productos/categorias/'+this.value">
+        <option th:each="categoria:${categorias}"
+                th:value="${categoria.getId()}"
+                th:text="${categoria.getNombre}"
+                th:selected="${categoria.id == selectedCategoriaId}"></option>
+    </select>
     <div id="productos">
         <div th:each="producto : ${productos}">
             <h2 th:text="${producto.titulo}">Título</h2>
