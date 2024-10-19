@@ -5,12 +5,19 @@
     <title>View</title>
 </head>
 <body>
-<!--Tienes que añadir un campo de comentario y que este se añada a la view del producto de forma dinámica-->
-  <div id="producto">
-    <h2 th:text="${producto.titulo}">Título</h2>
-    Precio: <span th:text="${producto.precio}">0.0</span>
-    Cantidad: <span th:text="${producto.cantidad}">0</span>
-  </div>
-  <a th:href="@{/productos}">Volver a lista</a>
+    <div id="producto">
+        <h2 th:text="${producto.titulo}">Título</h2>
+        Precio: <span th:text="${producto.precio}">0.0</span>
+        Cantidad: <span th:text="${producto.cantidad}">0</span>
+    </div>
+    <ul>
+        <li th:each="comentario:${producto.comentarios}">
+            <h2>Comentario:<span th:text="${comentario.id}"></span></h2>
+            <p th:text="${comentario.texto}">Text</p>
+            <p th:text="${comentario.fecha}">Fecha</p>
+        </li>
+    </ul>
+    <a th:href="@{/productos/view/{id}(id=${id})/newComent}"></a>
+    <a th:href="@{/productos}">Volver a lista</a>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.malsoft.ejemplo.controller;
 
 import com.malsoft.ejemplo.entity.Categoria;
+import com.malsoft.ejemplo.entity.Comentario;
 import com.malsoft.ejemplo.entity.Producto;
 import com.malsoft.ejemplo.repository.CategoriaRepository;
+import com.malsoft.ejemplo.repository.ComentarioRepository;
 import com.malsoft.ejemplo.repository.ProductoRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -18,13 +20,15 @@ import java.util.Optional;
 @Controller
 public class ProductoController {
 
-    private final CategoriaRepository categoriaRepository;
+    private CategoriaRepository categoriaRepository;
     //Para acceder al repositorio creamos una propiedad y la asignamos en el constructor
     private ProductoRepository productoRepository;
+    private ComentarioRepository comentarioRepository;
 
-    public ProductoController(ProductoRepository repository, CategoriaRepository categoriaRepository){
+    public ProductoController(ProductoRepository repository, CategoriaRepository categoriaRepository, ComentarioRepository comentarioRepository){
         this.productoRepository = repository;
         this.categoriaRepository = categoriaRepository;
+        this.comentarioRepository= comentarioRepository;
     }
 
     @GetMapping("/productos2")    //Anotación que indica la URL localhost:8080/productos2 mediante GET
@@ -84,8 +88,22 @@ public class ProductoController {
     @GetMapping("/productos/view/{id}")
     public String view(@PathVariable Long id, Model model){
         Producto p = productoRepository.getReferenceById(id);
+        model.addAttribute("id", id);
         model.addAttribute("producto",p);
         return "producto-view";
+    }
+    @GetMapping("/productos/newComent/{id}")
+    public String newComent(@PathVariable Long id, Model model){
+        Producto p = productoRepository.getReferenceById(id);
+        Comentario c= new Comentario();
+        model.addAttribute("comentario",c);
+        model.addAttribute("producto",p);
+        return "producto-newComent";
+    }
+    @PostMapping("/productos//newComent/{id}")
+    public String addComent(Model model, @PathVariable Long id, @Valid Comentario c){
+        productoRepository.getReferenceById(id).getComentarios().add(c);
+        return "redirect:/productos/view/" + id;
     }
     @GetMapping("/productos/new")
     public String newProducto(Model model){
