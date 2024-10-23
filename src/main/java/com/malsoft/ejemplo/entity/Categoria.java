@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data   //Incluye @ToString, @Getter, @Setter, @RequiredArgsConstructor y @EqualsAndHashCode
 //@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder    //Patron Builder
 //Anotacion de Spring Data JPA
 @Entity
@@ -28,5 +30,6 @@ public class Categoria {
     @OneToMany(targetEntity = Producto.class, cascade = CascadeType.ALL,
             mappedBy = "categoria")
     private List<Producto> productos = new ArrayList<>();
+
 
 }
