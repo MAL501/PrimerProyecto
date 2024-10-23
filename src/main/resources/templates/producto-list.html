@@ -2,27 +2,34 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de productos</title>
+    <title th:text="${titulo}"></title>
 </head>
 <body>
-    <select name="categoria" id="categoria" onchange="location.href='/productos/categorias/'+this.value">
-        <option th:each="categoria:${categorias}"
-                th:value="${categoria.getId()}"
-                th:text="${categoria.getNombre}"
-                th:selected="${categoria.id == selectedCategoriaId}"></option>
+
+    <select name="categoria" id="categoria" onchange="location.href = '/productos/categoria/'+this.value">
+        <option value="-1">Todas las categorias</option>
+        <option th:each="categoria : ${categorias}"
+                th:value="${categoria.id}"
+                th:text="${categoria.nombre}"
+                th:selected="${categoria.id == selectedCategoriaId}">
+        </option>
+
     </select>
+
     <div id="productos">
-        <div th:each="producto : ${productos}">
-            <h2 th:text="${producto.titulo}">Título</h2>
-            Precio: <span th:text="${producto.precio}">0.0</span>
-            Cantidad: <span th:text="${producto.cantidad}">0</span>
-            <a th:href="@{/productos/del/{id}(id=${producto.id})}">Borrar</a>
-            <a th:href="@{/productos/view/{id}(id=${producto.id})}">Ver</a>
-            <a th:href="@{/productos/edit/{id}(id=${producto.id})}">Editar</a>
-            <a th:href="@{/productos/newComent/{id}(id=${producto.id})}">Añadir comentario</a>
-        </div>
+        <p th:if="${#lists.isEmpty(productos)}">No hay productos.</p>
+        <ul>
+            <li th:each="producto: ${productos}">
+                <a th:href="@{'/productos/view/' + ${producto.id}}"
+                   th:text="${producto.titulo}"></a>
+                <span th:if="${producto.categoria != null}" th:text="'['+${producto.categoria.nombre}+']'"></span>
+                <a th:href="@{/productos/del/{id}(id=${producto.id})}">borrar</a>
+                <!--Queremos cargar una ruta del tipo: /getProductos/del/3 -->
+                <a th:href="@{/productos/edit/{id}(id=${producto.id})}">editar</a>
+            </li>
+        </ul>
     </div>
-    <a th:href="@{/productos/new}">Crear producto</a>
-    <a th:href="@{/productos/add}">Cargar productos</a>
+    <a th:href="@{/productos/new}">Insertar producto</a>
+
 </body>
 </html>

@@ -1,72 +1,34 @@
 package com.malsoft.ejemplo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
+//Anotaciones de LomBok
+@Data   //Incluye @ToString, @Getter, @Setter, @RequiredArgsConstructor y @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder    //Patron Builder
+//Anotacion de Spring Data JPA
 @Entity
-@Table(name = "comentario")
-public class Comentario{
-    //id,titulo,texto,fecha y producto relaiconado
+public class Comentario {
+
+    //id, titulo, texto, fecha y producto relacionado
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+    @Column(length = 2000)
     private String texto;
-    private LocalDateTime fecha;
+    private LocalDate fecha;
+
     @ManyToOne(targetEntity = Producto.class)
     private Producto producto;
 
-    public Comentario() {
-    }
 
-    public Comentario(int id, String texto, LocalDateTime fecha, Producto producto) {
-        this.id = id;
-        this.texto = texto;
-        this.fecha = fecha;
-        this.producto = producto;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-
-    public String getTexto() {
-        return texto;
-    }
-
-    public void setTexto(String texto) {
-        this.texto = texto;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    @Override
-    public String toString() {
-        return "Comentario{" +
-                "id=" + id +
-                ", texto='" + texto + '\'' +
-                ", fecha=" + fecha +
-                ", producto=" + producto +
-                '}';
-    }
 }
