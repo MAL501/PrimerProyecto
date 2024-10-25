@@ -21,6 +21,7 @@
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
+            <th>Foto</th>
             <th>Nombre de la Categoría</th>
             <th>Coste Medio</th>
             <th>Número de Productos</th>
@@ -30,6 +31,9 @@
         <tbody>
         <!-- Iteramos sobre la lista de categoriasConStats -->
         <tr th:each="categoria : ${categorias}">
+            <td>
+                <img th:src="@{'/imagesCategorias/' + ${categoria.foto}}" class="rounded mx-auto d-block">
+            </td>
             <td>
                 <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
                    th:text="${categoria.nombreCategoria}"></a>

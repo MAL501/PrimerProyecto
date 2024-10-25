@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class CategoriaController {
@@ -45,14 +47,18 @@ public class CategoriaController {
     @PostMapping("/categorias/new")
     public String guardarCategoria( @ModelAttribute("categoria") Categoria categoria,Model model,
                                     @RequestAttribute("file") MultipartFile file) {
-        Path ruta = Paths.get("uploads\\"+file.getOriginalFilename());
+        UUID unicName = UUID.randomUUID();
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String nuevoNombre = unicName + extension;
+        Path carpeta = Paths.get("uploads");
+        Path ruta = Paths.get("uploads/imagesCategorias"+ File.separator+nuevoNombre);
         try {
             byte[] contenido = file.getBytes();
             Files.write(ruta,contenido);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        categoria.setFoto(file.getOriginalFilename());
+        categoria.setFoto(nuevoNombre);
         categoriaRepository.save(categoria);
         return "redirect:/categorias";
 
