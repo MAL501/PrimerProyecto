@@ -2,7 +2,7 @@ package com.malsoft.ejemplo.controller;
 
 import com.malsoft.ejemplo.DTO.CategoriaCosteMedioDTO;
 import com.malsoft.ejemplo.entity.Categoria;
-import com.malsoft.ejemplo.repository.CategoriaRepository;
+import com.malsoft.ejemplo.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,21 +22,21 @@ import java.util.UUID;
 public class CategoriaController {
 
     @Autowired
-    CategoriaRepository categoriaRepository;
+    CategoriaService categoriaService;
 
     @GetMapping ("/categorias")
     public String categoria(Model model) {
         //Con esto obtendríamos todas las categorías
         //List<Categoria> categorias  = categoriaRepository.findAll();
         //Con esto hacemos una consulta personalizada para obtener el coste medio y número de productos por categoria
-        List<CategoriaCosteMedioDTO> categoriasConStats = categoriaRepository.obtenerCategoriasConStats();
+        List<CategoriaCosteMedioDTO> categoriasConStats = categoriaService.obtenerCategoriasConStats();
         model.addAttribute("categorias", categoriasConStats);
         return "categoria-list";
     }
 
     @GetMapping("/categoria/delete/{id}")
     public String borrarCategoria(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        categoriaRepository.deleteById(id);
+        categoriaService.eliminarCategoria(id);
         return "redirect:/categorias";  // Redirige de nuevo a la lista de categorías
     }
     @GetMapping("/categorias/new")
@@ -46,21 +46,14 @@ public class CategoriaController {
     }
     @PostMapping("/categorias/new")
     public String guardarCategoria( @ModelAttribute("categoria") Categoria categoria,Model model,
-                                    @RequestAttribute("file") MultipartFile file) {
-        UUID unicName = UUID.randomUUID();
-        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-        String nuevoNombre = unicName + extension;
-        Path carpeta = Paths.get("uploads");
-        Path ruta = Paths.get("uploads/imagesCategorias"+ File.separator+nuevoNombre);
+                                    @RequestAttribute("file") MultipartFile file,
+                                    RedirectAttributes redirectAttributes) {
         try {
-            byte[] contenido = file.getBytes();
-            Files.write(ruta,contenido);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            categoriaService.guardarCategoria(categoria, file);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("mensaje", e.getMessage());
+            return "redirect:/categorias/new";
         }
-        categoria.setFoto(nuevoNombre);
-        categoriaRepository.save(categoria);
         return "redirect:/categorias";
-
     }
 }

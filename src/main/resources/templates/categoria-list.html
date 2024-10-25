@@ -32,7 +32,7 @@
         <!-- Iteramos sobre la lista de categoriasConStats -->
         <tr th:each="categoria : ${categorias}">
             <td>
-                <img th:src="@{'/imagesCategorias/' + ${categoria.foto}}" class="rounded mx-auto d-block">
+                <img th:src="@{'/imagesCategorias/' + ${categoria.foto}}" class="rounded mx-auto d-block" width="100px">
             </td>
             <td>
                 <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}"

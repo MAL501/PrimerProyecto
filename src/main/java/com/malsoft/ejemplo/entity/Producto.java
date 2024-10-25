@@ -43,5 +43,10 @@ public class Producto {
     @OneToMany(targetEntity = Comentario.class, cascade =CascadeType.ALL,
             mappedBy = "producto")
     private List<Comentario> comentarios = new ArrayList<Comentario>(); //Obligatorio inicializarlo
-
+    @ElementCollection
+    /*JAVA no permite hacer listas de elementos simples.
+    * Esto creará una tabla secundaria en la BBDD que se
+    * vinculará a esta entidad
+    * */
+    private List<String> images=new ArrayList<>();
 }

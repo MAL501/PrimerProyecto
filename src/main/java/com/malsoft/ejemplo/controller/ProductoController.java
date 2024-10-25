@@ -12,10 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 //Para que Spring sepa que esta clase es un controlador tenemos que añadir la anotación @Controller antes de la clase
 @Controller
@@ -107,15 +114,30 @@ public class ProductoController {
     }
 
     @PostMapping("/productos/new")
-    public String newProductoInsert(Model model, @Valid Producto producto, BindingResult bindingResult){
+    public String newProductoInsert(Model model, @Valid Producto producto, BindingResult bindingResult,
+                                    //Con esto recogemos un file que será nuestra foto
+                                    @RequestAttribute("file")MultipartFile file){
         //Si ha habido errores de validación volvemos a mostrar el formulario
         if(bindingResult.hasErrors()){
             Sort sort = Sort.by("nombre").ascending();
             model.addAttribute("categorias", categoriaRepository.findAll(sort));
             return "producto-new";
         }
-
         //Si no ha habido errores de validación insertamos los datos en la BD
+        //Con estas líneas creamos un nuevo nombre para el archivo y lo guardamos
+        //en su carpeta correspondiente
+        UUID unicName = UUID.randomUUID();
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String nuevoNombre= unicName+extension;
+        Path carpeta = Paths.get("uploads");
+        Path ruta = Paths.get("uploads/imagesProductos" + File.separator+nuevoNombre);
+        try{
+            byte[] contenido = file.getBytes();
+            Files.write(ruta,contenido);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        producto.getImages().add(nuevoNombre);
         productoRepository.save(producto);
 
         //Redirigimos a /getProductos

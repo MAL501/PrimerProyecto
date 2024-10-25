@@ -15,6 +15,7 @@
         <option value="">Selecciona una categoria</option>
         <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
     </select><br>
+    <input type="file" name="file" placeholder="Foto"><br>
     <input type="submit" value="insertar">
 </form>
 </body>
