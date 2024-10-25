@@ -14,7 +14,7 @@
 
 
         Descargaros el repositorio y observar cambios en el controlador categoriaController. Se ha añadido una clase CategoriaService
-        donde se ha movido toda la lógica de negorio y el acceso a los datos. Es recomendable crear un Servicio para cada Controlador,
+        donde se ha movido toda la lógica de negocio y el acceso a los datos. Es recomendable crear un Servicio para cada Controlador,
         así la lógica de negocio y el acceso a los repositorios se hace desde el Servicio. El controlador se dedicará únicamente a las
         peticiones y respuestas HTTP. Hasta ahora no lo habíamos hecho para verlo más sencillo pero se debe hacer siempre. Se añade
         una nueva capa para el acceso a los datos. Cuesta un poco más de hacer pero es buena práctica y mucho mejor para mantener

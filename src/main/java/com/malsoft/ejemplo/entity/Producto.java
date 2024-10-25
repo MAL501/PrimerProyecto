@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.grammars.hql.HqlParser;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +45,7 @@ public class Producto {
     @OneToMany(targetEntity = Comentario.class, cascade =CascadeType.ALL,
             mappedBy = "producto")
     private List<Comentario> comentarios = new ArrayList<Comentario>(); //Obligatorio inicializarlo
-    @ElementCollection
-    /*JAVA no permite hacer listas de elementos simples.
-    * Esto creará una tabla secundaria en la BBDD que se
-    * vinculará a esta entidad
-    * */
+    @OneToMany(targetEntity = Foto.class, cascade = CascadeType.ALL,
+                mappedBy = "producto")
     private List<String> images=new ArrayList<>();
 }
