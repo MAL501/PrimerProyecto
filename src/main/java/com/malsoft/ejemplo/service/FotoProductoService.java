@@ -2,6 +2,7 @@ package com.malsoft.ejemplo.service;
 
 import com.malsoft.ejemplo.entity.Foto;
 import com.malsoft.ejemplo.entity.Producto;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public class FotoProductoService {
     private static final List<String> PERMITTED_TYPES = List.of("image/jpeg", "image/png", "image/gif", "image/avif", "image/webp");
     private static final long MAX_FILE_SIZE = 10000000;
