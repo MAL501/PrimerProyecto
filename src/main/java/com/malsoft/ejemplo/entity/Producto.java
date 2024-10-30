@@ -47,5 +47,5 @@ public class Producto {
     private List<Comentario> comentarios = new ArrayList<Comentario>(); //Obligatorio inicializarlo
     @OneToMany(targetEntity = Foto.class, cascade = CascadeType.ALL,
                 mappedBy = "producto")
-    private List<String> images=new ArrayList<>();
+    private List<Foto> images=new ArrayList<>();
 }
