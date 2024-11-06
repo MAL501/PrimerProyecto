@@ -25,6 +25,11 @@
     <input type="submit" value="Añadir comentario"><br>
 </form>
 <br>
+<ul>
+    <li th:each="image : ${producto.getImages()}">
+        <img th:src="@{'/imagesProductos/' + ${image.getRuta()}}">
+    </li>
+</ul>
 <a th:href="@{/productos}">Volver al listado</a>
 
 </body>

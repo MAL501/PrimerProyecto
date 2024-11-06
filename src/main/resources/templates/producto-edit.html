@@ -15,8 +15,10 @@
     <ul>
         <li th:each="image : ${producto.getImages()}">
             <img th:src="@{'/imagesProductos/' + ${image.getRuta()}}">
-            <!--INSERTAR COSAS PARA BORRARLAS DE VERDAD Y MÁS DE UNA A LA VEZ-->
-            <p>Borrar</p>
+            <!--
+            HACER UN BOTÓN PARA ELIMINAR LA FOTO Y UN SERVICIO QUE LO ELIMINE
+            -->
+            <form></form>
         </li>
     </ul>
 </body>
